@@ -1,12 +1,12 @@
 package ru.academits.shestialtynov.shapes;
 
 public class Triangle implements Shape {
-    public double x1;
-    public double y1;
-    public double x2;
-    public double y2;
-    public double x3;
-    public double y3;
+    private double x1;
+    private double y1;
+    private double x2;
+    private double y2;
+    private double x3;
+    private double y3;
 
     public Triangle(double x1, double y1, double x2, double y2, double x3, double y3) {
         this.x1 = x1;
@@ -15,6 +15,58 @@ public class Triangle implements Shape {
         this.y2 = y2;
         this.x3 = x3;
         this.y3 = y3;
+    }
+
+    public double getX1() {
+        return x1;
+    }
+
+    public double getY1() {
+        return y1;
+    }
+
+    public double getX2() {
+        return x2;
+    }
+
+    public double getY2() {
+        return y2;
+    }
+
+    public double getX3() {
+        return x3;
+    }
+
+    public double getY3() {
+        return y3;
+    }
+
+    public void setX1(double x1) {
+        this.x1 = x1;
+    }
+
+    public void setY1(double y1) {
+        this.y1 = y1;
+    }
+
+    public void setX2(double x2) {
+        this.x2 = x2;
+    }
+
+    public void setY2(double y2) {
+        this.y2 = y2;
+    }
+
+    public void setX3(double x3) {
+        this.x3 = x3;
+    }
+
+    public void setY3(double y3) {
+        this.y3 = y3;
+    }
+
+    public double sideLength(double x1, double x2, double y1, double y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
     @Override
@@ -34,17 +86,18 @@ public class Triangle implements Shape {
 
     @Override
     public double getPerimeter() {
-        double sideABLength = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-        double sideBCLength = Math.sqrt(Math.pow(x3 - x2, 2) + Math.pow(y3 - y2, 2));
-        double sideACLength = Math.sqrt(Math.pow(x3 - x1, 2) + Math.pow(y3 - y1, 2));
+        double sideABLength = sideLength(x1, x2, y1, y2);
+        double sideBCLength = sideLength(x2, x3, y2, y3);
+        double sideACLength = sideLength(x1, x3, y1, y3);
+
         return (sideABLength + sideBCLength + sideACLength) / 2;
     }
 
     @Override
     public String toString() {
-        return "Треугольник с координатами вершин:" + System.lineSeparator() +
-                "x1 - " + x1 + ", y1 - " + y1 + System.lineSeparator() +
-                "x2 - " + x2 + ", y2 - " + y2 + System.lineSeparator() +
+        return "Треугольник с координатами вершин:" +
+                "x1 - " + x1 + ", y1 - " + y1 +
+                "x2 - " + x2 + ", y2 - " + y2 +
                 "x3 - " + x3 + ", y3 - " + y3;
     }
 
