@@ -1,9 +1,17 @@
 package ru.academits.shestialtynov.shapes;
 
 public class Square implements Shape {
-    public double sideLength;
+    private double sideLength;
 
     public Square(double sideLength) {
+        this.sideLength = sideLength;
+    }
+
+    public double getSideLength() {
+        return sideLength;
+    }
+
+    public void setSideLength(double sideLength) {
         this.sideLength = sideLength;
     }
 
@@ -24,7 +32,7 @@ public class Square implements Shape {
 
     @Override
     public double getPerimeter() {
-        return (sideLength + sideLength) * 2;
+        return sideLength * 4;
     }
 
     @Override

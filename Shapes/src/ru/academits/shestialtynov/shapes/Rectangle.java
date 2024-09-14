@@ -1,37 +1,45 @@
 package ru.academits.shestialtynov.shapes;
 
 public class Rectangle implements Shape {
-    public double sideALength;
-    public double sideBLength;
+    private double height;
+    private double width;
 
-    public Rectangle(double sideALength, double sideBLength) {
-        this.sideALength = sideALength;
-        this.sideBLength = sideBLength;
+    public Rectangle(double height, double width) {
+        this.height = height;
+        this.width = width;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
     }
 
     @Override
     public double getWidth() {
-        return sideBLength;
+        return width;
     }
 
     @Override
     public double getHeight() {
-        return sideALength;
+        return height;
     }
 
     @Override
     public double getArea() {
-        return sideALength * sideBLength;
+        return height * width;
     }
 
     @Override
     public double getPerimeter() {
-        return (sideALength + sideBLength) * 2;
+        return (height + width) * 2;
     }
 
     @Override
     public String toString() {
-        return "Прямоугольник со сторонами: А = " + sideALength + ", B = " + sideBLength;
+        return "Прямоугольник со сторонами: А = " + height + ", B = " + width;
     }
 
     @Override
@@ -46,15 +54,15 @@ public class Rectangle implements Shape {
 
         Rectangle r = (Rectangle) o;
 
-        return sideALength == r.sideALength && sideBLength == r.sideBLength;
+        return height == r.height && width == r.width;
     }
 
     @Override
     public int hashCode() {
         final int prime = 37;
         int hash = 1;
-        hash = prime * hash + Double.hashCode(sideALength);
-        hash = prime * hash + Double.hashCode(sideBLength);
+        hash = prime * hash + Double.hashCode(height);
+        hash = prime * hash + Double.hashCode(width);
 
         return hash;
     }

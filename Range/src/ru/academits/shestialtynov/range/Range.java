@@ -73,6 +73,6 @@ public class Range {
             return new Range[]{new Range(from, range.from)};
         }
 
-        return null;
+        return new Range[0];
     }
 }
