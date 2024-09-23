@@ -1,7 +1,7 @@
 package ru.academits.shestialtynov.shapes_main;
 
-import ru.academits.shestialtynov.Shapes_comparator.ShapeAreaComparator;
-import ru.academits.shestialtynov.Shapes_comparator.ShapePerimeterComparator;
+import ru.academits.shestialtynov.shapes_comparator.ShapeAreaComparator;
+import ru.academits.shestialtynov.shapes_comparator.ShapePerimeterComparator;
 import ru.academits.shestialtynov.shapes.*;
 
 import java.util.Arrays;

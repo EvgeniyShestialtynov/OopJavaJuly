@@ -1,4 +1,4 @@
-package ru.academits.shestialtynov.Shapes_comparator;
+package ru.academits.shestialtynov.shapes_comparator;
 
 import ru.academits.shestialtynov.shapes.Shape;
 
