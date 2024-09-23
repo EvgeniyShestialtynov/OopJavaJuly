@@ -1,21 +1,20 @@
 package ru.academits.shestialtynov.shapes_main;
 
+import ru.academits.shestialtynov.Shapes_comparator.ShapeAreaComparator;
+import ru.academits.shestialtynov.Shapes_comparator.ShapePerimeterComparator;
 import ru.academits.shestialtynov.shapes.*;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 public class Main {
     public static Shape getMaxAreaShape(Shape[] shapes) {
-        Comparator<Shape> areaComparator = new AreaComparator();
-        Arrays.sort(shapes, areaComparator);
+        Arrays.sort(shapes, new ShapeAreaComparator());
 
         return shapes[shapes.length - 1];
     }
 
     public static Shape getSecondPerimeterShape(Shape[] shapes) {
-        Comparator<Shape> perimeterComparator = new PerimeterComparator();
-        Arrays.sort(shapes, perimeterComparator);
+        Arrays.sort(shapes, new ShapePerimeterComparator());
 
         return shapes[shapes.length - 2];
     }
