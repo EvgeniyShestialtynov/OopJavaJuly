@@ -15,18 +15,30 @@ public class Main {
         System.out.println(vector1);
         System.out.println(vector2);
 
-        System.out.println("Результат сложения векторов 1 и 2: " + Vector.sum(vector1, vector2));
+        System.out.println("Результат сложения векторов 1 и 2: " + Vector.getSum(vector1, vector2));
 
-        System.out.println("Результат вычитания вектора 1 из вектора 2: " + Vector.difference(vector1, vector2));
+        System.out.println(vector1);
+        System.out.println(vector2);
+
+        System.out.println("Результат вычитания вектора 1 из вектора 2: " + Vector.getDifference(vector2, vector1));
 
         vector2.setComponent(1, 4);
 
-        System.out.println("В векторе 2 компонета № 1 заменена на " + vector2.getComponent(1) + ", результат:" + vector2);
+        System.out.println("В векторе 2 компонента № 1 заменена на " + vector2.getComponent(1) + ", результат: " + vector2);
 
-        System.out.println("Результат умножения вектора 2 на скаляр 5:" + Arrays.toString(vector2.multiplyByScalar(5)));
+        vector2.multiplyByScalar(5);
 
-        System.out.println("Скалярное произведение векторов 1 и 2:" + Vector.scalarProduct(vector1, vector2));
+        System.out.println("Результат умножения вектора 2 на скаляр 5: " + vector2);
 
-        System.out.println("Разворот вектора 2:" + Arrays.toString(vector2.turn()));
+        System.out.println(vector1);
+        System.out.println(vector2);
+
+        System.out.println("Скалярное произведение векторов 1 и 2: " + Vector.getScalarProduct(vector1, vector2));
+
+        vector2.turn();
+
+        System.out.println("Разворот вектора 2: " + vector2);
+
+        System.out.println("Длина вектора 1: " + vector1.getVectorLength());
     }
 }
