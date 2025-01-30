@@ -17,9 +17,6 @@ public class Main {
 
         System.out.println("Результат сложения векторов 1 и 2: " + Vector.getSum(vector1, vector2));
 
-        System.out.println(vector1);
-        System.out.println(vector2);
-
         System.out.println("Результат вычитания вектора 1 из вектора 2: " + Vector.getDifference(vector2, vector1));
 
         vector2.setComponent(1, 4);
@@ -29,9 +26,6 @@ public class Main {
         vector2.multiplyByScalar(5);
 
         System.out.println("Результат умножения вектора 2 на скаляр 5: " + vector2);
-
-        System.out.println(vector1);
-        System.out.println(vector2);
 
         System.out.println("Скалярное произведение векторов 1 и 2: " + Vector.getScalarProduct(vector1, vector2));
 
