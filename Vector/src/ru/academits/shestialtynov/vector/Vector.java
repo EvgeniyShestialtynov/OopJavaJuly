@@ -82,16 +82,16 @@ public class Vector {
 
     @Override
     public String toString() {
-        StringBuilder componentsString = new StringBuilder("{");
+        StringBuilder stringBuilder = new StringBuilder("{");
 
         for (double component : components) {
-            componentsString.append(component).append(", ");
+            stringBuilder.append(component).append(", ");
         }
 
-        int stringLength = componentsString.length();
-        componentsString.delete(stringLength - 2, stringLength).append('}');
+        int stringLength = stringBuilder.length();
+        stringBuilder.delete(stringLength - 2, stringLength).append('}');
 
-        return componentsString.toString();
+        return stringBuilder.toString();
     }
 
     public void add(Vector vector) {
@@ -119,9 +119,9 @@ public class Vector {
     }
 
     public void multiplyByScalar(double scalar) {
-        int size = components.length;
+        int vectorSize = components.length;
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < vectorSize; i++) {
             components[i] *= scalar;
         }
     }
@@ -133,8 +133,8 @@ public class Vector {
     public double getLength() {
         double squaredComponentsSum = 0;
 
-        for (double v : components) {
-            squaredComponentsSum += v * v;
+        for (double component : components) {
+            squaredComponentsSum += component * component;
         }
 
         return Math.sqrt(squaredComponentsSum);
@@ -155,11 +155,11 @@ public class Vector {
     }
 
     public static double getScalarProduct(Vector vector1, Vector vector2) {
-        int vectorSize = Math.min(vector1.components.length, vector2.components.length);
+        int minVectorSize = Math.min(vector1.components.length, vector2.components.length);
 
         double scalarProduct = 0;
 
-        for (int i = 0; i < vectorSize; i++) {
+        for (int i = 0; i < minVectorSize; i++) {
             scalarProduct += vector1.components[i] * vector2.components[i];
         }
 
