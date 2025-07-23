@@ -61,7 +61,7 @@ public class Range {
             return new Range[]{new Range(minFrom, maxTo)};
         }
 
-        return new Range[]{this, range};
+        return new Range[]{new Range(this.from, this.to), new Range(range.from, range.to)};
     }
 
     public Range[] getDifference(Range range) {
@@ -87,6 +87,6 @@ public class Range {
             return new Range[]{new Range(minFrom, maxFrom), new Range(minTo, maxTo)};
         }
 
-        return new Range[]{this, range};
+        return new Range[]{new Range(this.from, this.to), new Range(range.from, range.to)};
     }
 }
