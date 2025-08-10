@@ -4,46 +4,253 @@ import ru.academits.shestialtynov.range.Range;
 
 public class Main {
     public static void main(String[] args) {
-        Range range1 = new Range(2.8, 6.5);
-        Range range2 = new Range(4.5, 7.8);
+        Range range1 = new Range(4.7, 8.8);
+        Range range2 = new Range(7.3, 9.2);
 
-        System.out.println("Длина диапазона " + range1.getFrom() + " - " + range1.getTo() + " = " + range1.getLength());
-        System.out.println("Длина диапазона " + range2.getFrom() + " - " + range2.getTo() + " = " + range2.getLength());
+        System.out.println("Создан диапазон 1: " + range1 + ", длиной " + range1.getLength());
+        System.out.println("Создан диапазон 2: " + range2 + ", длиной " + range2.getLength());
 
-        double number = 3;
+        double number = 5;
 
         if (range1.isInside(number)) {
-            System.out.println("Число " + number + " входит в диапазон " + range1.getFrom() + " - " + range1.getTo());
+            System.out.println("Число " + number + " входит в диапазон " + range1);
         } else {
-            System.out.println("Число " + number + " не входит в диапазон " + range1.getFrom() + " - " + range1.getTo());
+            System.out.println("Число " + number + " не входит в диапазон " + range1);
         }
 
-        Range range3 = range1.getRangesCrossing(range2);
+        Range intersection = range1.getIntersection(range2);
 
-        if (range3 == null) {
-            System.out.println("Диапазоны " + range1.getFrom() + " - " + range1.getTo() + " и " + range2.getFrom() + " - " + range2.getTo() + " не пересекаются");
+        if (intersection == null) {
+            System.out.println("Пересечения диапазонов " + range1 + " и " + range2 + " нет");
         } else {
-            System.out.println("Пересечение диапазонов от " + range3.getFrom() + " до " + range3.getTo());
+            System.out.println("Пересечение диапазонов " + range1 + " и " + range2 + " = " + intersection);
         }
 
-        Range[] rangesCombining = range1.getRangesCombining(range2);
-        System.out.println("Объединение диапазонов " + range1.getFrom() + " - " + range1.getTo() + " и " + range2.getFrom() + " - " + range2.getTo() + ":");
+        Range[] union = range1.getUnion(range2);
+        System.out.println("Объединение диапазонов " + range1 + " и " + range2 + ":");
 
-        for (Range e : rangesCombining) {
-            System.out.println(e.getFrom() + " - " + e.getTo());
+        for (Range range : union) {
+            System.out.println(range);
+        }
+
+        Range[] difference = range1.getDifference(range2);
+        System.out.println("Разность диапазонов " + range1 + " и " + range2 + ":");
+
+        if (difference.length == 0) {
+            System.out.println("0");
+        } else {
+            for (Range range : difference) {
+                System.out.println(range);
+            }
         }
 
         range2.setFrom(3.6);
         range2.setTo(5.3);
+        System.out.println("Диапазон 2 изменен: " + range2);
 
-        Range[] rangesDifference = range1.getRangesDifference(range2);
-        System.out.println("Разность диапазонов " + range1.getFrom() + " - " + range1.getTo() + " и " + range2.getFrom() + " - " + range2.getTo() + ":");
+        intersection = range1.getIntersection(range2);
 
-        if (rangesDifference == null) {
+        if (intersection == null) {
+            System.out.println("Пересечения диапазонов " + range1 + " и " + range2 + " нет");
+        } else {
+            System.out.println("Пересечение диапазонов " + range1 + " и " + range2 + " = " + intersection);
+        }
+
+        union = range1.getUnion(range2);
+        System.out.println("Объединение диапазонов " + range1 + " и " + range2 + ":");
+
+        for (Range range : union) {
+            System.out.println(range);
+        }
+
+        difference = range1.getDifference(range2);
+        System.out.println("Разность диапазонов " + range1 + " и " + range2 + ":");
+
+        if (difference.length == 0) {
             System.out.println("0");
         } else {
-            for (Range e : rangesDifference) {
-                System.out.println(e.getFrom() + " - " + e.getTo());
+            for (Range range : difference) {
+                System.out.println(range);
+            }
+        }
+
+        range2.setFrom(5.3);
+        range2.setTo(8.1);
+        System.out.println("Диапазон 2 изменен: " + range2);
+
+        intersection = range1.getIntersection(range2);
+
+        if (intersection == null) {
+            System.out.println("Пересечения диапазонов " + range1 + " и " + range2 + " нет");
+        } else {
+            System.out.println("Пересечение диапазонов " + range1 + " и " + range2 + " = " + intersection);
+        }
+
+        union = range1.getUnion(range2);
+        System.out.println("Объединение диапазонов " + range1 + " и " + range2 + ":");
+
+        for (Range range : union) {
+            System.out.println(range);
+        }
+
+        difference = range1.getDifference(range2);
+        System.out.println("Разность диапазонов " + range1 + " и " + range2 + ":");
+
+        if (difference.length == 0) {
+            System.out.println("0");
+        } else {
+            for (Range range : difference) {
+                System.out.println(range);
+            }
+        }
+
+        range2.setFrom(3.6);
+        range2.setTo(10.1);
+        System.out.println("Диапазон 2 изменен: " + range2);
+
+        intersection = range1.getIntersection(range2);
+
+        if (intersection == null) {
+            System.out.println("Пересечения диапазонов " + range1 + " и " + range2 + " нет");
+        } else {
+            System.out.println("Пересечение диапазонов " + range1 + " и " + range2 + " = " + intersection);
+        }
+
+        union = range1.getUnion(range2);
+        System.out.println("Объединение диапазонов " + range1 + " и " + range2 + ":");
+
+        for (Range range : union) {
+            System.out.println(range);
+        }
+
+        difference = range1.getDifference(range2);
+        System.out.println("Разность диапазонов " + range1 + " и " + range2 + ":");
+
+        if (difference.length == 0) {
+            System.out.println("0");
+        } else {
+            for (Range range : difference) {
+                System.out.println(range);
+            }
+        }
+
+        range2.setFrom(3.6);
+        range2.setTo(4.7);
+        System.out.println("Диапазон 2 изменен: " + range2);
+
+        intersection = range1.getIntersection(range2);
+
+        if (intersection == null) {
+            System.out.println("Пересечения диапазонов " + range1 + " и " + range2 + " нет");
+        } else {
+            System.out.println("Пересечение диапазонов " + range1 + " и " + range2 + " = " + intersection);
+        }
+
+        union = range1.getUnion(range2);
+        System.out.println("Объединение диапазонов " + range1 + " и " + range2 + ":");
+
+        for (Range range : union) {
+            System.out.println(range);
+        }
+
+        difference = range1.getDifference(range2);
+        System.out.println("Разность диапазонов " + range1 + " и " + range2 + ":");
+
+        if (difference.length == 0) {
+            System.out.println("0");
+        } else {
+            for (Range range : difference) {
+                System.out.println(range);
+            }
+        }
+
+        range2.setFrom(4.7);
+        range2.setTo(7.1);
+        System.out.println("Диапазон 2 изменен: " + range2);
+
+        intersection = range1.getIntersection(range2);
+
+        if (intersection == null) {
+            System.out.println("Пересечения диапазонов " + range1 + " и " + range2 + " нет");
+        } else {
+            System.out.println("Пересечение диапазонов " + range1 + " и " + range2 + " = " + intersection);
+        }
+
+        union = range1.getUnion(range2);
+        System.out.println("Объединение диапазонов " + range1 + " и " + range2 + ":");
+
+        for (Range range : union) {
+            System.out.println(range);
+        }
+
+        difference = range1.getDifference(range2);
+        System.out.println("Разность диапазонов " + range1 + " и " + range2 + ":");
+
+        if (difference.length == 0) {
+            System.out.println("0");
+        } else {
+            for (Range range : difference) {
+                System.out.println(range);
+            }
+        }
+
+        range2.setFrom(2.1);
+        range2.setTo(4.0);
+        System.out.println("Диапазон 2 изменен: " + range2);
+
+        intersection = range1.getIntersection(range2);
+
+        if (intersection == null) {
+            System.out.println("Пересечения диапазонов " + range1 + " и " + range2 + " нет");
+        } else {
+            System.out.println("Пересечение диапазонов " + range1 + " и " + range2 + " = " + intersection);
+        }
+
+        union = range1.getUnion(range2);
+        System.out.println("Объединение диапазонов " + range1 + " и " + range2 + ":");
+
+        for (Range range : union) {
+            System.out.println(range);
+        }
+
+        difference = range1.getDifference(range2);
+        System.out.println("Разность диапазонов " + range1 + " и " + range2 + ":");
+
+        if (difference.length == 0) {
+            System.out.println("0");
+        } else {
+            for (Range range : difference) {
+                System.out.println(range);
+            }
+        }
+
+        range2.setFrom(4.7);
+        range2.setTo(8.8);
+        System.out.println("Диапазон 2 изменен: " + range2);
+
+        intersection = range1.getIntersection(range2);
+
+        if (intersection == null) {
+            System.out.println("Пересечения диапазонов " + range1 + " и " + range2 + " нет");
+        } else {
+            System.out.println("Пересечение диапазонов " + range1 + " и " + range2 + " = " + intersection);
+        }
+
+        union = range1.getUnion(range2);
+        System.out.println("Объединение диапазонов " + range1 + " и " + range2 + ":");
+
+        for (Range range : union) {
+            System.out.println(range);
+        }
+
+        difference = range1.getDifference(range2);
+        System.out.println("Разность диапазонов " + range1 + " и " + range2 + ":");
+
+        if (difference.length == 0) {
+            System.out.println("0");
+        } else {
+            for (Range range : difference) {
+                System.out.println(range);
             }
         }
     }

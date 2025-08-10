@@ -25,11 +25,6 @@ public class Range {
         this.to = to;
     }
 
-    @Override
-    public String toString() {
-        return "[" + from + " - " + to + "]";
-    }
-
     public double getLength() {
         return to - from;
     }
@@ -38,14 +33,15 @@ public class Range {
         return from <= number && number <= to;
     }
 
+    @Override
+    public String toString() {
+        return "[" + from + " - " + to + "]";
+    }
+
     public Range getIntersection(Range range) {
-        if (isInside(range.from) || range.isInside(from)) {
+        if ((from <= range.from && range.from < to) || (range.from <= from && from < range.to)) {
             double rangesIntersectionFrom = Math.max(from, range.from);
             double rangesIntersectionTo = Math.min(to, range.to);
-
-            if (rangesIntersectionFrom == rangesIntersectionTo) {
-                return null;
-            }
 
             return new Range(rangesIntersectionFrom, rangesIntersectionTo);
         }
@@ -61,32 +57,27 @@ public class Range {
             return new Range[]{new Range(minFrom, maxTo)};
         }
 
-        return new Range[]{new Range(this.from, this.to), new Range(range.from, range.to)};
+        return new Range[]{new Range(from, to), new Range(range.from, range.to)};
     }
 
     public Range[] getDifference(Range range) {
 
-        if (range.from == from && range.to == to) {
+        if (from < range.to && range.from < to) {
+            if (from < range.from) {
+                if (range.to < to) {
+                    return new Range[]{new Range(from, range.from), new Range(range.to, to)};
+                }
+
+                return new Range[]{new Range(from, range.from)};
+            }
+
+            if (range.to < to) {
+                return new Range[]{new Range(range.to, to)};
+            }
+
             return new Range[0];
         }
 
-        if (isInside(range.from) && range.from != to || range.isInside(from) && from != range.to) {
-            double minFrom = Math.min(from, range.from);
-            double maxFrom = Math.max(from, range.from);
-            double minTo = Math.min(to, range.to);
-            double maxTo = Math.max(to, range.to);
-
-            if (minFrom == maxFrom) {
-                return new Range[]{new Range(minTo, maxTo)};
-            }
-
-            if (minTo == maxTo) {
-                return new Range[]{new Range(minFrom, maxFrom)};
-            }
-
-            return new Range[]{new Range(minFrom, maxFrom), new Range(minTo, maxTo)};
-        }
-
-        return new Range[]{new Range(this.from, this.to), new Range(range.from, range.to)};
+        return new Range[]{new Range(from, to)};
     }
 }
