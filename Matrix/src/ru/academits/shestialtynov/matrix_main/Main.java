@@ -5,7 +5,7 @@ import ru.academits.shestialtynov.vector.Vector;
 
 public class Main {
     public static void main(String[] args) {
-        double[][] array1 = {{4, 3, 2, 2}, {0, 1, 0, -2}, {1, -1, 3, 3}, {2, 3, 1, 1}};
+        double[][] array1 = {{0, 1, 3, 2}, {0, 1, 5, 6}, {1, 1, 10, 4}, {0, 1, 7, 13}};
         Matrix matrix1 = new Matrix(array1);
         System.out.println("Создана матрица 1 размером " + matrix1.getRowsCount() + " х " + matrix1.getColumnsCount());
         System.out.println(matrix1);
@@ -44,9 +44,9 @@ public class Main {
         System.out.println("Матрица 2 умножена на столбец 3 матрицы 1:");
         System.out.println(row);
 
-        double[][] array2 = {{2, 4, 6, 8}, {5, 6, 8, 5}};
+        double[][] array2 = {{2, 4, 6}, {5, 6, 8}, {5, 3, 6}, {6, 0, 0}};
         Matrix matrix3 = new Matrix(array2);
-        System.out.println("Создана матрица  размером " + matrix3.getRowsCount() + " х " + matrix3.getColumnsCount());
+        System.out.println("Создана матрица 3 размером " + matrix3.getRowsCount() + " х " + matrix3.getColumnsCount());
         System.out.println(matrix3);
 
         Matrix productMatrix = Matrix.getProduct(matrix1, matrix3);
