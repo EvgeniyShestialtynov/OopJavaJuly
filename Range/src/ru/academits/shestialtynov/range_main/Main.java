@@ -41,7 +41,7 @@ public class Main {
         System.out.println("Разность диапазонов " + range1 + " и " + range2 + ":");
 
         if (difference.length == 0) {
-            System.out.println("Пустой диапазон");
+            System.out.println("пустая разность");
         } else {
             for (Range range : difference) {
                 System.out.println(range);
