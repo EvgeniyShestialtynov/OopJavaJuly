@@ -5,7 +5,7 @@ import ru.academits.shestialtynov.vector.Vector;
 
 public class Main {
     public static void main(String[] args) {
-        double[][] array1 = {{0, 1, 3, 2}, {0, 1, 5, 6}, {1, 1, 10, 4}, {0, 1, 7, 13}};
+        double[][] array1 = {{2.0, 4.0, 1.0, 1.0}, {0.0, 2.0, 1.0, 0.0}, {2.0, 1.0, 1.0, 3.0}, {4.0, 0.0, 2.0, 3.0}};
         Matrix matrix1 = new Matrix(array1);
         System.out.println("Создана матрица 1 размером " + matrix1.getRowsCount() + " х " + matrix1.getColumnsCount());
         System.out.println(matrix1);
@@ -40,9 +40,9 @@ public class Main {
         System.out.println("Из матрицы 1 взят столбец 3:");
         System.out.println(column);
 
-        Vector row = matrix2.multiplyByVectorColumn(column);
+        Vector vectorColumn = matrix2.multiplyByVectorColumn(column);
         System.out.println("Матрица 2 умножена на столбец 3 матрицы 1:");
-        System.out.println(row);
+        System.out.println(vectorColumn);
 
         double[][] array2 = {{2, 4, 6}, {5, 6, 8}, {5, 3, 6}, {6, 0, 0}};
         Matrix matrix3 = new Matrix(array2);

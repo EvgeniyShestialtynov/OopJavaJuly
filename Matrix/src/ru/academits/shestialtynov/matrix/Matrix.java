@@ -58,17 +58,13 @@ public class Matrix {
         int rowsCount = vectors.length;
 
         if (rowsCount == 0) {
-            throw new IllegalArgumentException("Размер матрицы не может быть меньще чем 1 х 1, в переданном массиве 0 строк");
+            throw new IllegalArgumentException("Размер матрицы не может быть меньше чем 1 х 1, в переданном массиве 0 строк");
         }
 
         int columnsCount = 0;
 
         for (Vector vector : vectors) {
             columnsCount = Math.max(columnsCount, vector.getSize());
-        }
-
-        if (columnsCount == 0) {
-            throw new IllegalArgumentException("Размер матрицы не может быть меньще чем 1 х 1, в переданном массиве 0 столбцов");
         }
 
         rows = new Vector[rowsCount];
@@ -156,11 +152,13 @@ public class Matrix {
             return false;
         }
 
-        if (getColumnsCount() != ((Matrix) o).getColumnsCount()) {
+        Matrix object = (Matrix) o;
+
+        if (getColumnsCount() != object.getColumnsCount()) {
             return false;
         }
 
-        return Arrays.equals(rows, ((Matrix) o).rows);
+        return Arrays.equals(rows, object.rows);
     }
 
     @Override
@@ -216,32 +214,41 @@ public class Matrix {
 
         final double epsilon = 1.0e-10;
 
+        int swapRowsCount = 0;
+
         for (int i = 0; i < rowsCount; i++) {
             double maxColumnElement = triangleMatrixRows[i].getComponent(i);
-            int rowNumber = i;
+            int rowIndex = i;
 
             for (int j = i + 1; j < rowsCount; j++) {
                 if (triangleMatrixRows[j].getComponent(i) - maxColumnElement > epsilon) {
                     maxColumnElement = triangleMatrixRows[j].getComponent(i);
-                    rowNumber = j;
+                    rowIndex = j;
                 }
             }
 
-            if (rowNumber != i) {
-                Vector row = new Vector(triangleMatrixRows[rowNumber]);
-                triangleMatrixRows[rowNumber] = triangleMatrixRows[i];
+
+            if (rowIndex != i) {
+                Vector row = triangleMatrixRows[rowIndex];
+                triangleMatrixRows[rowIndex] = triangleMatrixRows[i];
                 triangleMatrixRows[i] = row;
+
+                swapRowsCount += 1;
             }
 
-            for (int k = i + 1; k < rowsCount; k++) {
-                if (Math.abs(triangleMatrixRows[k].getComponent(i) - 0) > epsilon) {
+            for (int j = i + 1; j < rowsCount; j++) {
+                if (Math.abs(triangleMatrixRows[j].getComponent(i)) > epsilon) {
                     Vector subtractableVector = new Vector(triangleMatrixRows[i]);
-                    subtractableVector.multiplyByScalar(triangleMatrixRows[k].getComponent(i) / triangleMatrixRows[i].getComponent(i));
-                    triangleMatrixRows[k].subtract(subtractableVector);
+                    subtractableVector.multiplyByScalar(triangleMatrixRows[j].getComponent(i) / triangleMatrixRows[i].getComponent(i));
+                    triangleMatrixRows[j].subtract(subtractableVector);
                 }
             }
 
             determinant *= triangleMatrixRows[i].getComponent(i);
+        }
+
+        if (swapRowsCount % 2 > 0) {
+            determinant *= -1;
         }
 
         return determinant;
@@ -252,13 +259,13 @@ public class Matrix {
             throw new IllegalArgumentException("Размер вектора должен быть - " + getColumnsCount() + ", размер переданного вектора - " + vector.getSize());
         }
 
-        Vector row = new Vector(rows.length);
+        Vector vectorColumn = new Vector(rows.length);
 
         for (int i = 0; i < rows.length; i++) {
-            row.setComponent(i, Vector.getScalarProduct(rows[i], vector));
+            vectorColumn.setComponent(i, Vector.getScalarProduct(rows[i], vector));
         }
 
-        return row;
+        return vectorColumn;
     }
 
     public void add(Matrix matrix) {
@@ -312,7 +319,7 @@ public class Matrix {
     public static Matrix getProduct(Matrix matrix1, Matrix matrix2) {
         if (matrix1.getColumnsCount() != matrix2.rows.length) {
             throw new IllegalArgumentException("Число столбцов матрицы 1 должно равняться числу строк матрицы 2. " +
-                    "Число столбцв матрицы 1 = " + matrix1.getColumnsCount() + ", число строк матрицы 2 = " + matrix2.rows.length);
+                    "Число столбцов матрицы 1 = " + matrix1.getColumnsCount() + ", число строк матрицы 2 = " + matrix2.rows.length);
         }
 
         int rowsCount = matrix1.rows.length;
