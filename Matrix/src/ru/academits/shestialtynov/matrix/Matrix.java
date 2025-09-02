@@ -152,13 +152,13 @@ public class Matrix {
             return false;
         }
 
-        Matrix object = (Matrix) o;
+        Matrix matrix = (Matrix) o;
 
-        if (getColumnsCount() != object.getColumnsCount()) {
-            return false;
+        if (getColumnsCount() == matrix.getColumnsCount()) {
+            return Arrays.equals(rows, matrix.rows);
         }
 
-        return Arrays.equals(rows, object.rows);
+        return false;
     }
 
     @Override
@@ -214,7 +214,7 @@ public class Matrix {
 
         final double epsilon = 1.0e-10;
 
-        int swapRowsCount = 0;
+        int swappedRowsCount = 0;
 
         for (int i = 0; i < rowsCount; i++) {
             double maxColumnElement = triangleMatrixRows[i].getComponent(i);
@@ -233,7 +233,7 @@ public class Matrix {
                 triangleMatrixRows[rowIndex] = triangleMatrixRows[i];
                 triangleMatrixRows[i] = row;
 
-                swapRowsCount += 1;
+                swappedRowsCount++;
             }
 
             for (int j = i + 1; j < rowsCount; j++) {
@@ -247,7 +247,7 @@ public class Matrix {
             determinant *= triangleMatrixRows[i].getComponent(i);
         }
 
-        if (swapRowsCount % 2 > 0) {
+        if (swappedRowsCount % 2 != 0) {
             determinant *= -1;
         }
 
