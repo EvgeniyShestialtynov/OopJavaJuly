@@ -1,119 +1,113 @@
 package ru.academits.shestialtynov.list;
 
-import ru.academits.shestialtynov.listItem.ListItem;
-
-import java.util.Arrays;
-
 public class List<E> {
     private ListItem<E> head;
-    private int count;
+    private int size = 0;
 
     public List() {
     }
 
-    public int getSize() {
-        return count;
-    }
-
-    public E getData() {
-        return head.getData();
-    }
-
-    public E getData(int index) {
-        if (index < 0 || index >= count) {
-            throw new IndexOutOfBoundsException("Нет элемента с индексом " + index + ". Допустимый диапазон индексов от 0 до " + (count - 1));
+    private void indexCheck(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Индекс " + index + " недоступен. Допустимый диапазон индексов от 0 до " + (size - 1));
         }
+    }
 
+    private ListItem<E> getItem(int index) {
         ListItem<E> listItem = head;
 
         for (int i = 0; i < index; i++) {
             listItem = listItem.getNext();
         }
 
+        return listItem;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public E getFirstData() {
+        return head.getData();
+    }
+
+    public E getData(int index) {
+        indexCheck(index);
+
+        ListItem<E> listItem = getItem(index);
+
         return listItem.getData();
     }
 
     public E setData(int index, E data) {
-        if (index < 0 || index >= count) {
-            throw new IndexOutOfBoundsException("Нет элемента с индексом " + index + ". Допустимый диапазон индексов от 0 до " + (count - 1));
-        }
+        indexCheck(index);
 
-        ListItem<E> listItem = head;
-
-        for (int i = 0; i < index - 1; i++) {
-            listItem = listItem.getNext();
-        }
+        ListItem<E> listItem = getItem(index);
 
         E oldData = listItem.getData();
         listItem.setData(data);
         return oldData;
     }
 
-    public void add(E data) {
-        head = new ListItem<E>(data, head);
-        count++;
+    public void addToTop(E data) {
+        head = new ListItem<>(data, head);
+        size++;
     }
 
-    public void add(E data, int index) {
-        if (index < 0 || index > count) {
-            throw new IndexOutOfBoundsException("Нет элемента с индексом " + index + ". Допустимый диапазон индексов от 0 до " + count);
-        }
+    public void add(int index, E data) {
+        indexCheck(index);
+        size++;
 
         if (index == 0) {
-            add(data);
-        } else {
-
-            ListItem<E> listItem = head;
-
-            for (int i = 0; i < index - 1; i++) {
-                listItem = listItem.getNext();
-            }
-
-            listItem.setNext(new ListItem<>(data, listItem.getNext()));
-            count++;
+            addToTop(data);
+            return;
         }
+
+        ListItem<E> listItem = getItem(index);
+        listItem.setNext(new ListItem<>(data, listItem.getNext()));
     }
 
-    public E remove() {
+    public E removeFirst() {
+        if (size == 0) {
+            throw new UnsupportedOperationException("Список пуст");
+        }
+
         E dataToDelete = head.getData();
         head = head.getNext();
-        count--;
+        size--;
+
         return dataToDelete;
     }
 
     public E remove(int index) {
-        if (index < 0 || index >= count) {
-            throw new IndexOutOfBoundsException("Нет элемента с индексом " + index + ". Допустимый диапазон индексов от 0 до " + (count - 1));
-        }
+        indexCheck(index);
 
         if (index == 0) {
-            return remove();
-        } else {
-            ListItem<E> listItem = head.getNext();
-
-            for (int i = 1; i < index - 1; i++) {
-                listItem = listItem.getNext();
-            }
-
-            ListItem<E> itemToDelete = listItem.getNext();
-            listItem.setNext(itemToDelete.getNext());
-            count--;
-
-            return itemToDelete.getData();
+            return removeFirst();
         }
+
+        ListItem<E> listItem = getItem(index - 1);
+        ListItem<E> itemToDelete = listItem.getNext();
+        listItem.setNext(itemToDelete.getNext());
+        size--;
+
+        return itemToDelete.getData();
     }
 
     public boolean remove(E data) {
-        if (head.getData() == data) {
-            head = head.getNext();
-            count--;
+        if (size == 0) {
+            return false;
+        }
+
+        if (data.equals(head.getData())) {
+            removeFirst();
             return true;
         }
 
         for (ListItem<E> currentItem = head.getNext(), previousItem = head; currentItem != null; previousItem = currentItem, currentItem = currentItem.getNext()) {
-            if (currentItem.getData() == data) {
+            if (data.equals(currentItem.getData())) {
                 previousItem.setNext(currentItem.getNext());
-                count--;
+                size--;
                 return true;
             }
         }
@@ -123,6 +117,10 @@ public class List<E> {
 
     @Override
     public String toString() {
+        if (size == 0) {
+            return "Список пуст";
+        }
+
         StringBuilder stringBuilder = new StringBuilder("{");
 
         for (ListItem<E> item = head; item != null; item = item.getNext()) {
@@ -141,12 +139,15 @@ public class List<E> {
             return true;
         }
 
-        if (object == null || object.getClass() != getClass() || ((List<?>) object).count != count) {
+        //noinspection unchecked
+        List<E> list = (List<E>) object;
+
+        if (object == null || object.getClass() != getClass() || list.size != size) {
             return false;
         }
 
-        for (@SuppressWarnings("unchecked") ListItem<E> item = head, objectItem = (ListItem<E>) ((List<?>) object).head; item != null; item = item.getNext(), objectItem = objectItem.getNext()) {
-            if (!item.getData().equals(objectItem.getData())) {
+        for (ListItem<E> item = head, listItem = list.head; item != null; item = item.getNext(), listItem = listItem.getNext()) {
+            if (!item.getData().equals(listItem.getData())) {
                 return false;
             }
         }
@@ -160,35 +161,50 @@ public class List<E> {
         int hash = 1;
 
         for (ListItem<E> item = head; item != null; item = item.getNext()) {
-            hash = prime * hash + item.hashCode();
+            hash = prime * hash + item.getData().hashCode();
         }
 
         return hash;
     }
 
     public void turn() {
-        ListItem<E> item = head;
-        ListItem<E> previousItem = null;
-        ListItem<E> nextItem = head.getNext();
+        if (size == 0) {
+            throw new UnsupportedOperationException("Список пуст");
+        }
 
-        for (int i = 0; i < count - 1; i++) {
+        if (size == 1) {
+            return;
+        }
+
+        ListItem<E> item;
+        ListItem<E> nextItem;
+        ListItem<E> previousItem = null;
+
+        for (item = head; item != null; item = nextItem) {
+            nextItem = item.getNext();
             item.setNext(previousItem);
             previousItem = item;
-            item = nextItem;
-            nextItem = nextItem.getNext();
         }
-        item.setNext(previousItem);
-        head = item;
+
+        head = previousItem;
     }
 
     public List<E> copy() {
         List<E> list = new List<>();
-        ListItem<E> item = head;
+        list.head = new ListItem<>(head.getData());
+        ListItem<E> listItem = list.head;
+        ListItem<E> listPreviousItem = listItem;
+        ListItem<E> item = head.getNext();
+        list.size++;
 
-        for (int i = 0; i < count; i++) {
-            list.add(item.getData(), i);
+        for (int i = 1; i < size; i++) {
+            listItem = new ListItem<>(item.getData());
+            listPreviousItem.setNext(listItem);
+            listPreviousItem = listItem;
             item = item.getNext();
+            list.size++;
         }
+
         return list;
     }
 }

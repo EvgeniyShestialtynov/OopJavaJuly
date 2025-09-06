@@ -1,14 +1,14 @@
-package ru.academits.shestialtynov.listItem;
+package ru.academits.shestialtynov.list;
 
-public class ListItem <E>{
+class ListItem<E> {
     private E data;
     private ListItem<E> next;
 
-    public ListItem (E data) {
+    public ListItem(E data) {
         this.data = data;
     }
 
-    public ListItem (E data, ListItem<E> next) {
+    public ListItem(E data, ListItem<E> next) {
         this.data = data;
         this.next = next;
     }
