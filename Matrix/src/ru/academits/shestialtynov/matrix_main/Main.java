@@ -22,6 +22,12 @@ public class Main {
         System.out.println("Создана матрица 2 копированием матрицы 1");
         System.out.println(matrix2);
 
+        if (matrix1.equals(matrix2)) {
+            System.out.println("Матрицы 1 и 2 эквивалентны");
+        } else {
+            System.out.println("Матрицы 1 и 2 не эквивалентны");
+        }
+
         double scalar = 3;
 
         matrix2.multiplyByScalar(scalar);

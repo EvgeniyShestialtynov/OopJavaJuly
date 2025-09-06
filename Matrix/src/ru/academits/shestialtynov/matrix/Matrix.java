@@ -148,17 +148,13 @@ public class Matrix {
             return true;
         }
 
-        if (o == null || o.getClass() != getClass()) {
+        Matrix matrix = (Matrix) o;
+
+        if (o == null || o.getClass() != getClass() || getColumnsCount() != matrix.getColumnsCount()) {
             return false;
         }
 
-        Matrix matrix = (Matrix) o;
-
-        if (getColumnsCount() == matrix.getColumnsCount()) {
-            return Arrays.equals(rows, matrix.rows);
-        }
-
-        return false;
+        return Arrays.equals(rows, matrix.rows);
     }
 
     @Override
@@ -226,7 +222,6 @@ public class Matrix {
                     rowIndex = j;
                 }
             }
-
 
             if (rowIndex != i) {
                 Vector row = triangleMatrixRows[rowIndex];
