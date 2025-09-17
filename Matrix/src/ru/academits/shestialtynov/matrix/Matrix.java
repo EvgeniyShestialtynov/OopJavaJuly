@@ -150,11 +150,15 @@ public class Matrix {
 
         Matrix matrix = (Matrix) o;
 
-        if (o == null || o.getClass() != getClass() || getColumnsCount() != matrix.getColumnsCount()) {
+        if (o == null || o.getClass() != getClass()) {
             return false;
         }
 
-        return Arrays.equals(rows, matrix.rows);
+        if (getColumnsCount() == matrix.getColumnsCount()) {
+            return Arrays.equals(rows, matrix.rows);
+        }
+
+        return false;
     }
 
     @Override
