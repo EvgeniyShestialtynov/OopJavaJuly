@@ -154,11 +154,7 @@ public class Matrix {
             return false;
         }
 
-        if (getColumnsCount() == matrix.getColumnsCount()) {
-            return Arrays.equals(rows, matrix.rows);
-        }
-
-        return false;
+        return getColumnsCount() == matrix.getColumnsCount() && Arrays.equals(rows, matrix.rows);
     }
 
     @Override
