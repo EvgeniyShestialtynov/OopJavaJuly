@@ -148,11 +148,11 @@ public class Matrix {
             return true;
         }
 
-        Matrix matrix = (Matrix) o;
-
         if (o == null || o.getClass() != getClass()) {
             return false;
         }
+
+        Matrix matrix = (Matrix) o;
 
         return getColumnsCount() == matrix.getColumnsCount() && Arrays.equals(rows, matrix.rows);
     }
