@@ -4,17 +4,17 @@ import ru.academits.shestialtynov.list.List;
 
 public class Main {
     public static void main(String[] args) {
-        List <Integer> list = new List<>();
-        list.addToTop(1);
-        list.addToTop(2);
-        list.addToTop(3);
-        list.addToTop(4);
-        list.addToTop(5);
+        List<Integer> list = new List<>();
+        list.addFirst(1);
+        list.addFirst(2);
+        list.addFirst(3);
+        list.addFirst(4);
+        list.addFirst(5);
         System.out.println("Создан список 1: " + list);
         System.out.println("Размер списка 1 = " + list.getSize());
 
         int index = 3;
-        System.out.println("Значение в списке  по индексу " + index + ": " + list.getData(index));
+        System.out.println("Значение в списке по индексу " + index + ": " + list.get(index));
 
         List<Integer> list2 = list.copy();
         System.out.println("Создан список 2, копированием списка 1: " + list2);
@@ -26,10 +26,12 @@ public class Main {
             System.out.println("Список 1 и список 2 не эквивалентны");
         }
 
-        list.add(4,6);
+        list.add(4, 6);
         System.out.println("В список 1 добавлен элемент. " + list);
-        System.out.println("Из списка 1 удален элемент со значением " + list.remove(0));
-        System.out.println("Списк 1: " + list);
+
+        index = 0;
+        System.out.println("Из списка 1 удален элемент по индексу " + index + " со значением " + list.remove(0));
+        System.out.println("Список 1: " + list);
 
         int deletedData = 4;
 
@@ -41,11 +43,13 @@ public class Main {
 
         System.out.println("Список 2: " + list2);
 
-        System.out.println("В списке 2 по индексу 2 значение " + list2.setData(2, 9) + " заменено на 9.");
+        index = 2;
+        Integer data = 5;
+        System.out.println("В списке 2 по индексу " + index + " значение " + list2.set(index, data) + " заменено на " + data);
         System.out.println("Список 2: " + list2);
 
         list2.turn();
-        System.out.println("Список 2 развернут.");
+        System.out.println("Список 2 развернут");
         System.out.println("Список 2: " + list2);
     }
 }
