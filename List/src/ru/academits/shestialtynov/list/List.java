@@ -1,6 +1,7 @@
 package ru.academits.shestialtynov.list;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class List<E> {
     private ListItem<E> head;
@@ -35,7 +36,7 @@ public class List<E> {
         return size;
     }
 
-    public E getFirstData() {
+    public E getFirst() {
         checkEmpty();
 
         return head.getData();
@@ -44,8 +45,7 @@ public class List<E> {
     public E get(int index) {
         checkIndex(index);
 
-        //noinspection unchecked
-        return (E) getItem(index);
+        return getItem(index).getData();
     }
 
     public E set(int index, E data) {
@@ -65,7 +65,7 @@ public class List<E> {
 
     public void add(int index, E data) {
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Индекс " + index + " некорректен. Допустимый диапазон индексов от 0 до " + (size));
+            throw new IndexOutOfBoundsException("Индекс " + index + " некорректен. Допустимый диапазон индексов от 0 до " + size);
         }
 
         if (index == 0) {
@@ -108,17 +108,6 @@ public class List<E> {
             return false;
         }
 
-        if (data == null) {
-            for (ListItem<E> currentItem = head.getNext(), previousItem = head; currentItem != null; previousItem = currentItem, currentItem = currentItem.getNext()) {
-                if (currentItem.getData() == null) {
-                    previousItem.setNext(currentItem.getNext());
-                    size--;
-
-                    return true;
-                }
-            }
-        }
-
         if (head.getData().equals(data)) {
             removeFirst();
 
@@ -126,7 +115,7 @@ public class List<E> {
         }
 
         for (ListItem<E> currentItem = head.getNext(), previousItem = head; currentItem != null; previousItem = currentItem, currentItem = currentItem.getNext()) {
-            if (currentItem.getData().equals(data)) {
+            if (Objects.equals(data, currentItem.getData())) {
                 previousItem.setNext(currentItem.getNext());
                 size--;
 
@@ -173,7 +162,7 @@ public class List<E> {
         }
 
         for (ListItem<E> item = head, listItem = list.head; item != null; item = item.getNext(), listItem = listItem.getNext()) {
-            if (!item.getData().equals(listItem.getData())) {
+            if (!Objects.equals(item.getData(), listItem.getData())) {
                 return false;
             }
         }
@@ -187,9 +176,7 @@ public class List<E> {
         int hash = 1;
 
         for (ListItem<E> item = head; item != null; item = item.getNext()) {
-            if (item.getData() != null) {
-                hash = prime * hash + item.getData().hashCode();
-            }
+            hash = prime * hash + (item.getData() != null ? item.getData().hashCode() : 0);
         }
 
         return hash;
@@ -201,11 +188,10 @@ public class List<E> {
         }
 
         ListItem<E> item = head;
-        ListItem<E> nextItem;
         ListItem<E> previousItem = null;
 
         while (item != null) {
-            nextItem = item.getNext();
+            ListItem<E> nextItem = item.getNext();
             item.setNext(previousItem);
             previousItem = item;
             item = nextItem;
@@ -215,14 +201,15 @@ public class List<E> {
     }
 
     public List<E> copy() {
+        checkEmpty();
+
         List<E> list = new List<>();
         list.head = new ListItem<>(head.getData());
-        ListItem<E> listItem = list.head;
-        ListItem<E> previousListItem = listItem;
+        ListItem<E> previousListItem = list.head;
         list.size = size;
 
         for (ListItem<E> item = head.getNext(); item != null; item = item.getNext()) {
-            listItem = new ListItem<>(item.getData());
+            ListItem<E> listItem = new ListItem<>(item.getData());
             previousListItem.setNext(listItem);
             previousListItem = listItem;
         }

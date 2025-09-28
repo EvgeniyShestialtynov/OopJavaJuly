@@ -1,4 +1,4 @@
-package ru.academits.shestialtynov.main;
+package ru.academits.shestialtynov.list_main;
 
 import ru.academits.shestialtynov.list.List;
 
@@ -33,12 +33,12 @@ public class Main {
         System.out.println("Из списка 1 удален элемент по индексу " + index + " со значением " + list.remove(0));
         System.out.println("Список 1: " + list);
 
-        int deletedData = 4;
+        Integer deletedData = 4;
 
-        if (list2.remove((Integer) deletedData)) {
+        if (list2.remove(deletedData)) {
             System.out.println("Из списка 2 удален элемент со значением " + deletedData);
         } else {
-            System.out.println("В списке 2 нет элемента со значением" + deletedData);
+            System.out.println("В списке 2 нет элемента со значением " + deletedData);
         }
 
         System.out.println("Список 2: " + list2);
