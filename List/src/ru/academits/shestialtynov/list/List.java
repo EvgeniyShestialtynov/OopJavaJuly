@@ -16,10 +16,8 @@ public class List<E> {
         }
     }
 
-    private void checkEmpty() {
-        if (size == 0) {
-            throw new NoSuchElementException("Список пуст");
-        }
+    public boolean isEmpty() {
+        return size == 0;
     }
 
     private ListItem<E> getItem(int index) {
@@ -37,7 +35,7 @@ public class List<E> {
     }
 
     public E getFirst() {
-        checkEmpty();
+        isEmpty();
 
         return head.getData();
     }
@@ -79,7 +77,9 @@ public class List<E> {
     }
 
     public E removeFirst() {
-        checkEmpty();
+        if (isEmpty()) {
+            throw new NoSuchElementException("Список пуст!");
+        }
 
         E removedData = head.getData();
         head = head.getNext();
@@ -108,7 +108,7 @@ public class List<E> {
             return false;
         }
 
-        if (head.getData().equals(data)) {
+        if (Objects.equals(data, head.getData())) {
             removeFirst();
 
             return true;
@@ -201,12 +201,14 @@ public class List<E> {
     }
 
     public List<E> copy() {
-        checkEmpty();
+        if (isEmpty()) {
+            return new List<>();
+        }
 
         List<E> list = new List<>();
         list.head = new ListItem<>(head.getData());
-        ListItem<E> previousListItem = list.head;
         list.size = size;
+        ListItem<E> previousListItem = list.head;
 
         for (ListItem<E> item = head.getNext(); item != null; item = item.getNext()) {
             ListItem<E> listItem = new ListItem<>(item.getData());
