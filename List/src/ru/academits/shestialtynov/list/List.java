@@ -16,8 +16,10 @@ public class List<E> {
         }
     }
 
-    public boolean isEmpty() {
-        return size == 0;
+    private void checkEmpty() {
+        if (size == 0) {
+            throw new NoSuchElementException("Список пуст");
+        }
     }
 
     private ListItem<E> getItem(int index) {
@@ -35,7 +37,7 @@ public class List<E> {
     }
 
     public E getFirst() {
-        isEmpty();
+        checkEmpty();
 
         return head.getData();
     }
@@ -77,9 +79,7 @@ public class List<E> {
     }
 
     public E removeFirst() {
-        if (isEmpty()) {
-            throw new NoSuchElementException("Список пуст!");
-        }
+        checkEmpty();
 
         E removedData = head.getData();
         head = head.getNext();
@@ -201,9 +201,7 @@ public class List<E> {
     }
 
     public List<E> copy() {
-        if (isEmpty()) {
-            return new List<>();
-        }
+        checkEmpty();
 
         List<E> list = new List<>();
         list.head = new ListItem<>(head.getData());
