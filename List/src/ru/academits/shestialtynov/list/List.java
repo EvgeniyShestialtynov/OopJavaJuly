@@ -201,18 +201,19 @@ public class List<E> {
     }
 
     public List<E> copy() {
+        if (size == 0) {
+            return new List<>();
+        }
+
         List<E> list = new List<>();
+        list.head = new ListItem<>(head.getData());
+        list.size = size;
+        ListItem<E> previousListItem = list.head;
 
-        if (size != 0) {
-            list.head = new ListItem<>(head.getData());
-            list.size = size;
-            ListItem<E> previousListItem = list.head;
-
-            for (ListItem<E> sourceListItem = head.getNext(); sourceListItem != null; sourceListItem = sourceListItem.getNext()) {
-                ListItem<E> listItem = new ListItem<>(sourceListItem.getData());
-                previousListItem.setNext(listItem);
-                previousListItem = listItem;
-            }
+        for (ListItem<E> sourceListItem = head.getNext(); sourceListItem != null; sourceListItem = sourceListItem.getNext()) {
+            ListItem<E> listItem = new ListItem<>(sourceListItem.getData());
+            previousListItem.setNext(listItem);
+            previousListItem = listItem;
         }
 
         return list;
