@@ -21,10 +21,10 @@ public class ArrayList<E> implements List<E> {
         items = (E[]) new Object[capacity];
     }
 
-    public ArrayList(Collection<E> list) {
-        size = list.size();
+    public ArrayList(Collection<E> collection) {
+        size = collection.size();
         //noinspection unchecked
-        items = (E[]) list.toArray(new Object[size]);
+        items = (E[]) collection.toArray(new Object[size]);
     }
 
     private void checkIndex(int index) {
@@ -56,13 +56,13 @@ public class ArrayList<E> implements List<E> {
     public void add(int index, E item) {
         checkIndexForAdd(index);
 
-        if (size >= items.length) {
-            increaseCapacity();
-        }
-
         if (index == size) {
             add(item);
             return;
+        }
+
+        if (size >= items.length) {
+            increaseCapacity();
         }
 
         System.arraycopy(items, index, items, index + 1, size - index);
@@ -93,7 +93,8 @@ public class ArrayList<E> implements List<E> {
         }
 
         for (E item : collection) {
-            items[index + 1] = item;
+            items[index] = item;
+            index++;
         }
 
         size += collectionSize;
@@ -108,7 +109,7 @@ public class ArrayList<E> implements List<E> {
             return;
         }
 
-        Arrays.fill(items, 0, size - 1, null);
+        Arrays.fill(items, 0, items.length - 1, null);
 
         size = 0;
         modCount++;
