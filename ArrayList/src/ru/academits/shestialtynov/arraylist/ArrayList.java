@@ -92,9 +92,11 @@ public class ArrayList<E> implements List<E> {
             System.arraycopy(items, index, items, index + collectionSize, size - index);
         }
 
+        int i = index;
+
         for (E item : collection) {
-            items[index] = item;
-            index++;
+            items[i] = item;
+            i++;
         }
 
         size += collectionSize;
@@ -109,7 +111,7 @@ public class ArrayList<E> implements List<E> {
             return;
         }
 
-        Arrays.fill(items, 0, items.length - 1, null);
+        Arrays.fill(items, null);
 
         size = 0;
         modCount++;

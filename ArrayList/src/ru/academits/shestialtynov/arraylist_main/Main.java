@@ -30,7 +30,7 @@ public class Main {
         System.out.println("Из списка 1 удалены элементы встречающиеся в списке 2");
         System.out.println("Список 1: " + list1);
 
-        Integer[] array = new Integer[]{6, 5, 4, 3, 2, 1};
+        Integer[] array = {6, 5, 4, 3, 2, 1};
         list1.toArray(array);
         System.out.println("Элементы списка 1 добавлены в массив");
         System.out.println("Массив: " + Arrays.toString(array));
