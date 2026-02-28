@@ -111,7 +111,7 @@ public class ArrayList<E> implements List<E> {
             return;
         }
 
-        Arrays.fill(items, null);
+        Arrays.fill(items, 0, size, null);
 
         size = 0;
         modCount++;
