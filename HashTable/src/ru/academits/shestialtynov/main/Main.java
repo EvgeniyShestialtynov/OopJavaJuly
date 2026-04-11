@@ -2,6 +2,9 @@ package ru.academits.shestialtynov.main;
 
 import ru.academits.shestialtynov.hashtable.HashTable;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+
 public class Main {
     public static void main(String[] args) {
         HashTable<String> hashTable = new HashTable<>();
@@ -28,8 +31,9 @@ public class Main {
         hashTable.add(name9);
 
         System.out.println("Хэш-таблица заполнена, содержит " + hashTable.size() + " элементов");
-        System.out.println(hashTable);
+        System.out.println(Arrays.toString(hashTable.toArray()));
 
+        System.out.println();
         if (hashTable.contains(name1)) {
             System.out.println("Хэш-таблица содержит элемент \"" + name1 + "\"");
         } else {
@@ -38,12 +42,13 @@ public class Main {
 
         if (hashTable.remove(name2)) {
             System.out.println("Из хэш-таблицы удален \"" + name2 + "\"");
+            System.out.println(Arrays.toString(hashTable.toArray()));
         } else {
             System.out.println("Хэш-таблица не содержит элемент \"" + name2 + "\"");
         }
 
         hashTable.clear();
         System.out.println("Хэш-таблица очищена");
-        System.out.println(hashTable);
-        }
+        System.out.println(Arrays.toString(hashTable.toArray()));
     }
+}

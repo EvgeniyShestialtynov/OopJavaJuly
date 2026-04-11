@@ -2,37 +2,43 @@ package ru.academits.shestialtynov.hashtable;
 
 import java.util.*;
 
-
 public class HashTable<E> implements Collection<E> {
-    private LinkedList<E>[] table;
+    private final LinkedList<E>[] baskets;
     private int size;
     private int modCount;
 
     public HashTable() {
         //noinspection unchecked
-        table = (LinkedList<E>[]) new LinkedList[100];
+        baskets = (LinkedList<E>[]) new LinkedList[10];
     }
 
     public HashTable(int capacity) {
+        if (capacity <= 0) {
+            throw new IllegalArgumentException("Вместимость хэш-таблицы не может быть меньше 1, передана вместимость " + capacity);
+        }
+
         //noinspection unchecked
-        table = (LinkedList<E>[]) new LinkedList[capacity];
+        baskets = (LinkedList<E>[]) new LinkedList[capacity];
     }
 
-    private int index(Object object) {
-        return Math.abs(object.hashCode() % table.length);
+    private int getIndex(Object object) {
+        return Math.abs(object.hashCode() % baskets.length);
     }
 
     @Override
     public boolean add(E element) {
-        int index = index(element);
 
-        if (table[index] == null) {
-            table[index] = new LinkedList<>();
-        } else if (table[index].contains(element)) {
+        if (element == null) {
             return false;
         }
 
-        table[index].add(element);
+        int index = getIndex(element);
+
+        if (baskets[index] == null) {
+            baskets[index] = new LinkedList<>();
+        }
+
+        baskets[index].add(element);
         size++;
         modCount++;
 
@@ -41,6 +47,10 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> collection) {
+        if (collection.isEmpty()) {
+            return false;
+        }
+
         for (E element : collection) {
             add(element);
         }
@@ -50,12 +60,9 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean remove(Object object) {
-        int index = index(object);
+        int index = getIndex(object);
 
-        //noinspection unchecked
-        E element = (E) object;
-
-        if (table[index].remove(element)) {
+        if (baskets[index].remove(object)) {
             size--;
             modCount++;
 
@@ -67,36 +74,54 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean removeAll(Collection<?> collection) {
-        boolean removed = false;
+        boolean isRemoved = false;
 
-        for (Object element : collection) {
-            if (remove(element)) {
-                removed = true;
+        for (LinkedList<E> basket : baskets) {
+
+            if (basket != null) {
+                int basketSize = basket.size();
+
+                if (basket.removeAll(collection)) {
+                    size -= basketSize - basket.size();
+                    isRemoved = true;
+                }
             }
         }
 
-        return removed;
+        return isRemoved;
     }
 
     @Override
     public boolean retainAll(Collection<?> collection) {
-        boolean removed = false;
+        boolean isRemoved = false;
 
-        for (E element : this) {
-            if (!collection.contains(element)) {
-                remove(element);
-                removed = true;
+        for (LinkedList<E> basket : baskets) {
+
+            if (basket != null) {
+                int basketSize = basket.size();
+
+                if (basket.retainAll(collection)) {
+                    size -= basketSize - basket.size();
+                    isRemoved = true;
+                }
             }
         }
 
-        return removed;
+        return isRemoved;
     }
 
     @Override
     public void clear() {
-        Arrays.fill(table, null);
-        size = 0;
-        modCount++;
+        if (!this.isEmpty()) {
+            for (LinkedList<E> basket : baskets) {
+                if (basket != null) {
+                    basket.clear();
+                }
+            }
+
+            size = 0;
+            modCount++;
+        }
     }
 
     @Override
@@ -111,13 +136,9 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean contains(Object object) {
-        int index = index(object);
+        int index = getIndex(object);
 
-        if (table[index] == null) {
-            return false;
-        }
-
-        return table[index].contains(object);
+        return baskets[index] != null && baskets[index].contains(object);
     }
 
     @Override
@@ -133,53 +154,19 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public String toString() {
-        return Arrays.toString(table);
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (object == this) {
-            return true;
-        }
-
-        if (object == null || object.getClass() != getClass()) {
-            return false;
-        }
-
-        HashTable<?> hashTable = (HashTable<?>) object;
-
-        if (hashTable.size != size) {
-            return false;
-        }
-
-        for (int i = 0; i < table.length; i++) {
-            if (!Objects.equals(table[i], hashTable.table[i])) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 37;
-        int hash = 1;
-
-        for (LinkedList<E> element : table) {
-            hash = prime * hash + (element == null ? 0 : element.hashCode());
-        }
-
-        return hash;
+        return Arrays.toString(baskets);
     }
 
     private class HashTableIterator implements Iterator<E> {
-        private int currentIndex = -1;
+        private int elementsPassedNumber;
+        private int currentBasketIndex;
+        private int currentListIndex = -1;
+
         private final int initialModCount = modCount;
 
         @Override
         public boolean hasNext() {
-            return currentIndex + 1 < table.length;
+            return elementsPassedNumber < size;
         }
 
         @Override
@@ -191,10 +178,20 @@ public class HashTable<E> implements Collection<E> {
             if (initialModCount != modCount) {
                 throw new ConcurrentModificationException("Хэш-таблица была изменена");
             }
-            currentIndex++;
 
-            //noinspection unchecked
-            return (E) table[currentIndex];
+            elementsPassedNumber++;
+            currentListIndex++;
+
+            if (currentListIndex >= baskets[currentBasketIndex].size()) {
+                do {
+                    currentBasketIndex++;
+                }
+                while (baskets[currentBasketIndex] == null);
+
+                currentListIndex = 0;
+            }
+
+            return baskets[currentBasketIndex].get(currentListIndex);
         }
     }
 
@@ -205,11 +202,14 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public Object[] toArray() {
-        Object[][] array = new Object[table.length][];
+        Object[] array = new Object[size];
         int i = 0;
-        for (LinkedList<E> element : table) {
-            array[i] = new LinkedList[]{element};
-            i++;
+
+        for (LinkedList<E> element : baskets) {
+            if (element != null) {
+                System.arraycopy(element.toArray(), 0, array, i, element.size());
+                i += element.size();
+            }
         }
 
         return array;
@@ -217,16 +217,23 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public <T> T[] toArray(T[] array) {
-        if (array.length < table.length) {
+        if (array.length < size) {
             //noinspection unchecked
-            return (T[]) Arrays.copyOf(table, table.length, array.getClass());
+            array = (T[]) new Object[size];
         }
 
-        //noinspection SuspiciousSystemArraycopy
-        System.arraycopy(table, 0, array, 0, size);
+        int i = 0;
 
-        if (table.length < array.length) {
-            array[table.length] = null;
+        for (LinkedList<E> element : baskets) {
+            if (element != null) {
+                //noinspection SuspiciousSystemArraycopy
+                System.arraycopy(element.toArray(), 0, array, i, element.size());
+                i += element.size();
+            }
+        }
+
+        if (size < array.length) {
+            array[size] = null;
         }
 
         return array;
