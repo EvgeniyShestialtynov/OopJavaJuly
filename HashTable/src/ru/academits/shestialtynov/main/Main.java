@@ -1,4 +1,4 @@
-package ru.academits.shestialtynov.hashtable_main;
+package ru.academits.shestialtynov.main;
 
 import ru.academits.shestialtynov.hashtable.HashTable;
 
