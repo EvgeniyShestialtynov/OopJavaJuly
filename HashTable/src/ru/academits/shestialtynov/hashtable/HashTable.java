@@ -59,13 +59,9 @@ public class HashTable<E> implements Collection<E> {
 
     @Override
     public boolean remove(Object object) {
-        if (object == null) {
-            return false;
-        }
-
         int index = getIndex(object);
 
-        if (buckets[index].remove(object)) {
+        if (buckets[index] != null && buckets[index].remove(object)) {
             size--;
             modCount++;
 
@@ -86,9 +82,12 @@ public class HashTable<E> implements Collection<E> {
                 if (bucket.removeAll(collection)) {
                     size -= initialBucketSize - bucket.size();
                     isRemoved = true;
-                    modCount++;
                 }
             }
+        }
+
+        if (isRemoved) {
+            modCount++;
         }
 
         return isRemoved;
@@ -105,9 +104,12 @@ public class HashTable<E> implements Collection<E> {
                 if (bucket.retainAll(collection)) {
                     size -= initialBucketSize - bucket.size();
                     isRemoved = true;
-                    modCount++;
                 }
             }
+        }
+
+        if (isRemoved) {
+            modCount++;
         }
 
         return isRemoved;
@@ -167,7 +169,7 @@ public class HashTable<E> implements Collection<E> {
         private int currentBucketIndex;
         private final int initialModCount = modCount;
 
-        private Iterator<E> iterator = buckets[currentBucketIndex].iterator();
+        private Iterator<E> iterator = null;
 
         @Override
         public boolean hasNext() {
@@ -186,10 +188,10 @@ public class HashTable<E> implements Collection<E> {
 
             elementsPassedCount++;
 
-            if (buckets[currentBucketIndex] == null || !iterator.hasNext()) {
-                do {
+            if (iterator == null || buckets[currentBucketIndex] == null || !iterator.hasNext()) {
+                while (buckets[currentBucketIndex] == null || buckets[currentBucketIndex].isEmpty()) {
                     currentBucketIndex++;
-                } while (buckets[currentBucketIndex] == null || buckets[currentBucketIndex].isEmpty());
+                }
 
                 iterator = buckets[currentBucketIndex].iterator();
             }
@@ -211,7 +213,8 @@ public class HashTable<E> implements Collection<E> {
         for (LinkedList<E> bucket : buckets) {
             if (bucket != null) {
                 for (E element : bucket) {
-                    array[i++] = element;
+                    array[i] = element;
+                    i++;
                 }
             }
         }
@@ -232,7 +235,8 @@ public class HashTable<E> implements Collection<E> {
             if (bucket != null) {
                 for (E element : bucket) {
                     //noinspection unchecked
-                    array[i++] = (T) element;
+                    array[i] = (T) element;
+                    i++;
                 }
             }
         }

@@ -32,6 +32,13 @@ public class Main {
         System.out.println("Хэш-таблица заполнена, содержит " + hashTable.size() + " элементов");
         System.out.println(Arrays.toString(hashTable.toArray()));
 
+        if (hashTable.remove(name9)) {
+            System.out.println("Из хэш-таблицы удален \"" + name9 + "\"");
+        } else {
+            System.out.println("Хэш-таблица не содержит элемент \"" + name9 + "\"");
+        }
+        System.out.println(hashTable);
+
         System.out.println();
 
         if (hashTable.contains(name2)) {
@@ -41,8 +48,7 @@ public class Main {
         }
 
         if (hashTable.remove(name9)) {
-            System.out.println("Из хэш-таблицы удален \"" + name9 + "\"");
-            System.out.println(Arrays.toString(hashTable.toArray()));
+            System.out.println("Из хэш-таблицы удален элемент \"" + name9 + "\"");
         } else {
             System.out.println("Хэш-таблица не содержит элемент \"" + name9 + "\"");
         }
