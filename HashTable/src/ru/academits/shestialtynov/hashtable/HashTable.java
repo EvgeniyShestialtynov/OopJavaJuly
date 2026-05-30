@@ -169,7 +169,7 @@ public class HashTable<E> implements Collection<E> {
         private int currentBucketIndex;
         private final int initialModCount = modCount;
 
-        private Iterator<E> iterator = null;
+        private Iterator<E> iterator;
 
         @Override
         public boolean hasNext() {
